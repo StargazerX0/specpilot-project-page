@@ -41,7 +41,7 @@ h1 { font-size: clamp(30px, 3.6vw, 42px); font-weight: 700; line-height: 1.2; le
 .logo-berkeley { width: 150px; }
 .logo-princeton { width: 160px; }
 .logo-stanford { width: 140px; }
-.logo-nvidia { width: 118px; }
+.logo-nvidia { width: 160px; }
 .authors { max-width: 880px; margin: 0 auto; font-size: 19px; line-height: 1.9; }
 .authors > span { display: inline-block; white-space: nowrap; }
 .authors sup, .affiliations sup { font-size: .65em; padding-left: 2px; }
@@ -151,7 +151,7 @@ body.dialog-open { overflow: hidden; }
   .logo-berkeley { width: 118px; }
   .logo-princeton { width: 128px; }
   .logo-stanford { width: 112px; }
-  .logo-nvidia { width: 96px; }
+  .logo-nvidia { width: 128px; }
   .authors { font-size: 17px; }
   .affiliations { font-size: 14px; gap: 2px 18px; }
   .author-note { font-size: 12px; }
