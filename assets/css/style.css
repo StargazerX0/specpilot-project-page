@@ -45,7 +45,7 @@ h1 { font-size: clamp(30px, 3.6vw, 42px); font-weight: 700; line-height: 1.2; le
 .authors { max-width: 880px; margin: 0 auto; font-size: 19px; line-height: 1.9; }
 .authors > span { display: inline-block; white-space: nowrap; }
 .authors sup, .affiliations sup { font-size: .65em; padding-left: 2px; }
-.affiliations { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 24px; margin: 13px 0 6px; font-size: 16px; color: #5b6066; }
+.affiliations { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 24px; margin: 13px 0 26px; font-size: 16px; color: #5b6066; }
 .author-note { display: flex; justify-content: center; flex-wrap: wrap; column-gap: 19px; row-gap: 1px; color: var(--muted); font-size: 13px; margin: 7px 0 26px; }
 .button-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 11px; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #24272a; color: #fff; font-size: 15px; padding: 9px 21px; min-height: 44px; border: 1px solid #24272a; border-radius: 99px; transition: background .15s ease; }
