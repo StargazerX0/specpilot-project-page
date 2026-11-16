@@ -88,6 +88,15 @@
       <div class="stat"><span class="stat-value">3.93&times;</span><span class="stat-label">speedup over AR with batching, up from stock's 1.94&times;</span></div>
       <div class="stat"><span class="stat-value">12 bits</span><span class="stat-label">per BF16 weight in W12, a lossless format whose GEMM beats cuBLAS on H100</span></div>
     </div>
+    <figure>
+      <div class="overview-video">
+        <video controls playsinline muted preload="metadata" width="1920" height="1080" poster="assets/videos/pear_poster.jpg?v=1" aria-label="PEAR on LIBERO: PEAR baseline and SpecPilot with efficient reasoning side by side">
+          <source src="assets/videos/pear_demo.mp4?v=1" type="video/mp4">
+          <a href="assets/videos/pear_demo.mp4?v=1">Download the PEAR demo video.</a>
+        </video>
+      </div>
+      <figcaption><strong>PEAR, a reasoning model that controls a robot, on the same LIBERO task at 4&times; speed.</strong> SpecPilot with efficient reasoning finishes in 49.2&nbsp;s on the robot clock, while the PEAR baseline takes 188.7&nbsp;s. Both use the same weights, initial state and seed on one RTX PRO 6000. <a href="#pear">More on PEAR below.</a></figcaption>
+    </figure>
   </section>
 
   <section class="section" id="bottlenecks" aria-labelledby="bottlenecks-title">
@@ -234,15 +243,6 @@
 
   <section class="section" id="pear" aria-labelledby="pear-title">
     <h2 id="pear-title">PEAR: faster robot reasoning</h2>
-    <figure>
-      <div class="overview-video">
-        <video controls playsinline muted preload="metadata" width="1920" height="1080" poster="assets/videos/pear_poster.jpg?v=1" aria-label="PEAR on LIBERO: PEAR baseline and SpecPilot with efficient reasoning side by side">
-          <source src="assets/videos/pear_demo.mp4?v=1" type="video/mp4">
-          <a href="assets/videos/pear_demo.mp4?v=1">Download the PEAR demo video.</a>
-        </video>
-      </div>
-      <figcaption><strong>The same LIBERO task, played at 4&times; speed.</strong> SpecPilot with efficient reasoning finishes in 49.2&nbsp;s on the robot clock, while the PEAR baseline takes 188.7&nbsp;s. Both use the same weights, initial state and seed on one RTX PRO 6000.</figcaption>
-    </figure>
     <p><a href="https://github.com/mit-han-lab/pear">PEAR</a> is a reasoning model, Qwen3.8-27B trained with RL to act as a robot policy, that controls a robot directly. The robot waits while the model thinks, so decoding speed sets how fast it finishes a task. We serve PEAR with DFlash2 on the SpecPilot engine for the RTX PRO 6000, extended with lossless sampling at temperature 1, a drafter calibrated for PEAR and a prefix cache for multi-turn sessions.</p>
     <p>On top of this engine, an <em>efficient reasoning</em> decode rule accepts drafted tokens that the target gives probability 0.3 or more, does not sample hesitation words such as &ldquo;Wait&rdquo; or &ldquo;Hmm&rdquo;, and never relaxes inside a repeated sequence. No training is involved.</p>
     <div class="table-scroll table-narrow">
