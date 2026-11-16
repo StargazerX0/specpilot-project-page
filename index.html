@@ -19,6 +19,7 @@
       <a href="#loop">The loop</a>
       <a href="#discoveries">Discoveries</a>
       <a href="#results">Results</a>
+      <a href="#pear">PEAR</a>
       <a href="#w12">W12</a>
       <a href="#citation">BibTeX</a>
     </div>
@@ -229,6 +230,33 @@
 
     <h3>Memory carries gains to new deployments</h3>
     <p>New deployments reuse validated mechanisms and adapt them. DSpark reused the tree, W12 and TLV entries, which one promotion applied together at 2.110&times;. On the RTX PRO 6000, which lacks Hopper's <code>wgmma</code> instructions, porting the tree and W12 entries alone gave a sealed 1.92&times; over stock, and the final 2.44&times; exceeds the 2.12&times; ceiling that assumes one draft per pass. Muse-Glimmer-30B, a dense model, reused memory except the recurrent-layer entries and reached 2.21&times;. Even EAGLE-3, a sequential drafter, reimplemented W12 and prompt admission from memory on its way to 3.11&times;.</p>
+  </section>
+
+  <section class="section" id="pear" aria-labelledby="pear-title">
+    <h2 id="pear-title">PEAR: faster robot reasoning</h2>
+    <p><a href="https://github.com/mit-han-lab/pear">PEAR</a> is a reasoning model, Qwen3.8-27B trained with RL to act as a robot policy, that controls a robot directly. The robot waits while the model thinks, so decoding speed sets how fast it finishes a task. We serve PEAR with DFlash2 on the SpecPilot engine for the RTX PRO 6000, extended with lossless sampling at temperature 1, a drafter calibrated for PEAR and a prefix cache for multi-turn sessions.</p>
+    <p>On top of this engine, an <em>efficient reasoning</em> decode rule accepts drafted tokens that the target gives probability 0.3 or more, does not sample hesitation words such as &ldquo;Wait&rdquo; or &ldquo;Hmm&rdquo;, and never relaxes inside a repeated sequence. No training is involved.</p>
+    <figure>
+      <div class="overview-video">
+        <video controls playsinline muted preload="metadata" width="1920" height="1080" poster="assets/videos/pear_poster.jpg?v=1" aria-label="PEAR on LIBERO: PEAR baseline and SpecPilot with efficient reasoning side by side">
+          <source src="assets/videos/pear_demo.mp4?v=1" type="video/mp4">
+          <a href="assets/videos/pear_demo.mp4?v=1">Download the PEAR demo video.</a>
+        </video>
+      </div>
+      <figcaption><strong>The same LIBERO task, played at 4&times; speed.</strong> SpecPilot with efficient reasoning finishes in 49.2&nbsp;s on the robot clock, while the PEAR baseline takes 188.7&nbsp;s. Both use the same weights, initial state and seed on one RTX PRO 6000.</figcaption>
+    </figure>
+    <div class="table-scroll table-narrow">
+      <table>
+        <caption>PEAR bf16 on libero_spatial task 6, T=1, top-p 0.95, reasoning effort xhigh</caption>
+        <thead><tr><th>System</th><th>Task completion</th><th>Speedup</th><th>Decode tok/s</th></tr></thead>
+        <tbody>
+          <tr><th>PEAR baseline (vLLM + DFlash2, K=7)</th><td>188.7&nbsp;s</td><td>1&times;</td><td>71</td></tr>
+          <tr class="ours"><th>SpecPilot + efficient reasoning</th><td>49.2&nbsp;s</td><td>3.84&times;</td><td>241</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Times are on the robot clock: model time plus action steps at 20&nbsp;Hz. Over 19 LIBERO episodes, the median speedup over the PEAR baseline is 4.04&times;. In 120 paired closed-loop episodes, the efficient reasoning rule makes the robot clock 1.87&times; [1.59, 2.17] faster than the same engine without it, at the same success rate (81.7% for both).</p>
+    <div class="takeaway"><strong>This rule is lossy.</strong> It changes the reasoning text, which is then no longer a sample from PEAR's own distribution. We validated it on LIBERO only, and it is not part of the paper's results. The <a href="https://github.com/StargazerX0/SpecPilot/tree/main/settings/pro6000_c1_pear-qwen38-27b_dflash2_er">setting's README</a> has the reproduction scripts and the limits of the evaluation.</div>
   </section>
 
   <section class="section" id="w12" aria-labelledby="w12-title">
